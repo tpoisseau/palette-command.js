@@ -1,8 +1,7 @@
 # PaletteCommand-JS
 PaletteCommand like ctrl+shift+p of SublimeText for modern browser
 
-![](jsdoc-res/visual-example.png)
-![](visual-example.png)
+![Imgur](https://i.imgur.com/6ZJ4TwZ.png)
 
 # Instalation
 
@@ -45,11 +44,11 @@ palette.setCategory([
 // press ctrl+alt+p and palette appear with one item (Advanced interactivity)
 ```
 
-# API
+# Advanced Usage
 
 You'll found generated JSDOC here :
 
-https://tpoisseau.github.io/palette-command.js/PaletteCommand.html
+[API](https://tpoisseau.github.io/palette-command.js/PaletteCommand.html)
 
 # Todo
-- [] Rich Jsdoc with tutorial
+- [ ] Rich Jsdoc with tutorial

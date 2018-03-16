@@ -29,11 +29,7 @@
     "monospaceLinks": true,
     "linenums": true,
     "default": {
-      "outputSourceFiles" : true,
-      "staticFiles": {
-        "include": ["./jsdoc-res"]
-      }
-
+      "outputSourceFiles" : true
     }
   },
   "plugins": [
