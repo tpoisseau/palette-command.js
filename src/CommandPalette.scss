@@ -1,0 +1,70 @@
+.cmd-palette {
+  position: fixed;
+  z-index: 9;
+  top: 1rem;
+  left: calc(50vw - 20rem);
+  right: calc(50vw - 20rem);
+
+  background: #F6F6F6;
+  padding: 0.25rem;
+
+  box-sizing: border-box;
+
+  *, *::after, *::before {
+    box-sizing: inherit;
+  }
+
+  &.cmd-palette--hide {
+    display: none;
+  }
+
+  &.cmd-palette--show {
+    display: initial;
+  }
+
+  input {
+    width: 100%;
+    height: 2rem;
+    border: none;
+    border-radius: 0.25rem;
+    font-size: 1.25em;
+    padding: 0.25rem;
+    background: #FFFFFFEE;
+  }
+
+  ul {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    width: 100%;
+    margin: 0.25rem 0 0;
+    padding: 0.25rem;
+    list-style: none;
+    color: #444;
+    font-family: monospace;
+
+    display: flex;
+    flex-direction: column;
+
+    &.cmd-palette-item--hide {
+      display: none;
+    }
+
+    &[selected] {
+      background: #DDD;
+    }
+
+    .title {
+      font-weight: bold;
+      font-size: 1.25em
+    }
+
+    .description {
+      font-weight: lighter;
+    }
+  }
+}
