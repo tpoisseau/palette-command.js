@@ -1,24 +1,36 @@
 {
   "opts": {
-    "template": "templates/default",
+    "template": "./node_modules/foodoc/template",
     "encoding": "utf8",
     "destination": "./docs/",
     "recurse": true,
     "readme": "./README.md",
+    "package": "package.json",
     "verbose": true
   },
+  "linenums": true,
   "source": {
-    "includePattern": ".+\\.js(doc|x)?$",
-    "excludePattern": "(^|\\/|\\\\)_"
+    "include": [
+      "./src"
+    ]
   },
   "sourceType": "module",
   "tags": {
     "allowUnknownTags": true,
-    "dictionaries": ["jsdoc","closure"]
+    "dictionaries": [
+      "jsdoc",
+      "closure"
+    ]
   },
   "templates": {
+    "systemName": "Command Palette.js",
+    "systemSummary": "CommandPalette like ctrl+shift+p like SublimeText for modern browser",
     "cleverLinks": true,
-    "monospaceLinks": false
+    "monospaceLinks": true,
+    "linenums": true,
+    "default": {
+      "outputSourceFiles" : true
+    }
   },
   "plugins": [
     "plugins/markdown",

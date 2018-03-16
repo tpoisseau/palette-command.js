@@ -30,6 +30,9 @@ export default [
       sourcemap: true,
       name: 'CommandPalette',
       format: 'iife',
-    }
+    },
+    watch: {
+      include: 'src/**'
+    },
   },
 ];

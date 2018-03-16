@@ -26,16 +26,18 @@
 
 /**
  * @type {number}
+ * @private
  */
 let sequence = 0;
 
 /**
  * @type {CommandPalette~ConstructorOptions}
+ * @private
  */
 const defaultOptions = {
   isShortcut: event => event.ctrlKey && event.altKey && event.key === 'p',
   navigationCallback(event) {
-    switch(event.key) {
+    switch (event.key) {
       case 'ArrowDown':
         this.next();
         break;
@@ -50,7 +52,7 @@ const defaultOptions = {
 };
 
 /**
- * @property {CommandPalette~ConstructorOptions} options
+ * @property {CommandPalette~ConstructorOptions} options - Merged options (Object.assign) you give to constructor with default options
  */
 class CommandPalette {
 
@@ -63,8 +65,31 @@ class CommandPalette {
   }
 
   /**
+   * Default options is litteraly
+   *
+   * ```javascript
+   *
+   * const defaultOptions = {
+   *  isShortcut: event => event.ctrlKey && event.altKey && event.key === 'p',
+   *  navigationCallback(event) {
+   *    switch (event.key) {
+   *      case 'ArrowDown':
+   *        this.next();
+   *        break;
+   *      case 'ArrowUp':
+   *        this.prev();
+   *        break;
+   *      case 'Enter':
+   *        this.dispatch();
+   *        break;
+   *    }
+   *  }
+   * }
+   * ```
+   *
    * @param {CommandPalette~ConstructorOptions} [options={}] - Options for palette
-   * @example
+   *
+   * @example {@lang javascript}
    * // add `cmd-palette--custom` class to classlist of root command-palette dom element
    * new CommandPalette({
    *  cssClass: 'cmd-palette--custom'
@@ -96,8 +121,8 @@ class CommandPalette {
    *  }
    * );
    */
-  constructor(options={}) {
-    this.contexts = {
+  constructor(options = {}) {
+    this.categories = {
       '': {}
     };
     this._id = CommandPalette._sequence;
@@ -112,7 +137,7 @@ class CommandPalette {
    * @param {CommandPalette~Command[]} commands
    * @param {string|symbol} [category='']
    *
-   * @example
+   * @example {@lang javascript}
    * // add commands to default context
    * palette.setCategory([
    *  {
@@ -122,7 +147,7 @@ class CommandPalette {
    *      console.log('foo');
    *    }
    *  }
-   * ])
+   * ]);
    *
    * // replace `Bar` context
    * palette.setCategory([
@@ -133,13 +158,13 @@ class CommandPalette {
    *      console.log('foo');
    *    }
    *  }
-   * ], 'Bar')
+   * ], 'Bar');
    */
-  setCategory(commands=[], category='') {
-    const context = name ? {} : this.contexts[name];
+  setCategory(commands = [], category = '') {
+    const context = category ? {} : this.categories[category];
     commands.forEach(cmd => context[cmd.name] = cmd);
 
-    this.contexts[name] = context;
+    this.categories[category] = context;
   }
 
   /**
@@ -147,9 +172,9 @@ class CommandPalette {
    */
   removeCategory(category) {
     if (!category) return;
-    if (!category in this.contexts) return;
+    if (!category in this.categories) return;
 
-    delete this.contexts[category];
+    delete this.categories[category];
   }
 
   /**
@@ -158,13 +183,13 @@ class CommandPalette {
    * @param {CommandPalette~Command | CommandPalette~Command[]} commands
    * @param {string|symbol} [category=''] - Generic category if not specified
    */
-  addToCategory(commands, category='') {
-    this.contexts[category] || (this.contexts[category] = {});
+  addToCategory(commands, category = '') {
+    this.categories[category] || (this.categories[category] = {});
 
     if (Array.isArray(commands)) {
-      commands.forEach(command => this.contexts[category][command.name] = command);
+      commands.forEach(command => this.categories[category][command.name] = command);
     } else {
-      this.contexts[category][commands.name] = commands;
+      this.categories[category][commands.name] = commands;
     }
   }
 
@@ -183,8 +208,7 @@ class CommandPalette {
   _generateCommandDOM() {
     const commands = [];
 
-    for (let [category, context] of Object.entries(this.contexts)) {
-      console.log(context, category);
+    for (let [category, context] of Object.entries(this.categories)) {
       for (let [name, command] of Object.entries(context)) {
         commands.push({
           ...command, category, name,
@@ -196,7 +220,7 @@ class CommandPalette {
     return commands
       .sort((a, b) => a.category.localeCompare(b.category) || a.title.localeCompare(b.title))
       .map((cmd, idx) => `
-        <li data-category="${cmd.category}" data-name="${cmd.name}"${idx === 0 ? ' selected': ''}>
+        <li data-category="${cmd.category}" data-name="${cmd.name}"${idx === 0 ? ' selected' : ''}>
           <span class="title">${cmd.title}</span>
           <span class="description">${cmd.description}</span>
         </li>
@@ -287,7 +311,7 @@ class CommandPalette {
     if (!oldSelected) return;
     let selected = oldSelected;
 
-    while(selected.nextElementSibling) {
+    while (selected.nextElementSibling) {
       selected = selected.nextElementSibling;
 
       if (selected.matches('.cmd-palette-item--hide')) continue;
@@ -296,6 +320,8 @@ class CommandPalette {
 
     oldSelected.removeAttribute('selected');
     selected.setAttribute('selected', 'selected');
+
+    CommandPalette._scrollTo(selected);
   }
 
   /**
@@ -309,7 +335,7 @@ class CommandPalette {
     if (!oldSelected) return;
     let selected = oldSelected;
 
-    while(selected.previousElementSibling) {
+    while (selected.previousElementSibling) {
       selected = selected.previousElementSibling;
 
       if (selected.classList.contains('cmd-palette-item--hide')) continue;
@@ -318,6 +344,22 @@ class CommandPalette {
 
     oldSelected.removeAttribute('selected');
     selected.setAttribute('selected', 'selected');
+
+    CommandPalette._scrollTo(selected);
+  }
+
+  /**
+   * @param {HTMLElement|Element} selected
+   * @private
+   */
+  static _scrollTo(selected) {
+    if (!selected) return;
+    if (!selected.parentElement) return;
+
+    const itemHeight = selected.clientHeight;
+    const scrollTopSelectedTopMax = selected.offsetTop - itemHeight;
+
+    selected.parentElement.scrollTop = scrollTopSelectedTopMax - (2 * itemHeight);
   }
 
   /**
@@ -331,7 +373,7 @@ class CommandPalette {
   static _fuzzySearch(search, term) {
     let hay = term.toLowerCase(), i = 0, n = -1, l;
     search = search.toLowerCase();
-    for (; l = search[i++] ;) if (!~(n = hay.indexOf(l, n + 1))) return false;
+    for (; l = search[i++];) if (!~(n = hay.indexOf(l, n + 1))) return false;
     return true;
   }
 
@@ -343,7 +385,7 @@ class CommandPalette {
    */
   search(text) {
     if (this.isHide()) return;
-    console.log('start search', text);
+    text = text.trim();
 
     const dom = this._findOrGenerateDom();
     const items = [...dom.querySelectorAll('li')];
@@ -375,14 +417,15 @@ class CommandPalette {
     const item = dom.querySelector('li[selected]:not(.cmd-palette-item--hide)');
     if (!item) return;
 
-    const {category='', name} = item.dataset;
-    const context = this.contexts[category];
-    if(!context) return;
+    const {category = '', name} = item.dataset;
+    const context = this.categories[category];
+    if (!context) return;
 
     const command = context[name];
-    if(!command) return;
+    if (!command) return;
 
     typeof command.action === 'function' && command.action();
+    this.hide();
   }
 
   /**
@@ -392,7 +435,7 @@ class CommandPalette {
    */
   _initEvent() {
     this._docClickHide = event => {
-      if (event.target.matches('#cmd-palette') || event.target.closest('#cmd-palette')) return;
+      if (event.target.matches('.cmd-palette') || event.target.closest('.cmd-palette')) return;
 
       this.hide();
     };

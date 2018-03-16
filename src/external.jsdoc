@@ -1,0 +1,14 @@
+/**
+ * @class KeyboardEvent
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent}
+ */
+
+/**
+ * @class HTMLElement
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement}
+ */
+
+/**
+ * @class Element
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/Element}
+ */

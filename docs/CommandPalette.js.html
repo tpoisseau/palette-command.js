@@ -1,37 +1,76 @@
+<!-- start:source.tmpl.hbs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>JSDoc: Source: CommandPalette.js</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+		<title>CommandPalette.js</title>
+		<!--[if lt IE 9]>
+		<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<link href="https://fonts.googleapis.com/css?family=PT+Mono" rel="stylesheet">
+		<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
+		<link type="text/css" rel="stylesheet" href="css/prism.min.css">
+		<link type="text/css" rel="stylesheet" href="css/template.min.css">
+		<script type="text/javascript">
+			window.TEMPLATE_OPTIONS = {"includeDate":true,"dateFormat":"Do MMM YYYY","systemName":"Command Palette.js","systemSummary":"CommandPalette like ctrl+shift+p like SublimeText for modern browser","systemLogo":"","systemColor":"","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Modules","summary":"All documented modules."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.","linenums":true,"collapseSymbols":true,"inverseNav":true,"inlineNav":false,"outputSourceFiles":true,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"showAccessFilter":true,"analytics":null,"methodHeadingReturns":true,"sort":"linenum, longname, version, since","search":true,"favicon":null,"stylesheets":[],"scripts":[],"monospaceLinks":true,"cleverLinks":true,"default":{"outputSourceFiles":true}};
+			window.DOCLET_TOC_ENABLED = false;
+			window.DOCLET_AFILTER_ENABLED = false;
+		</script>
 </head>
-
 <body>
-
-<div id="main">
-
-    <h1 class="page-title">Source: CommandPalette.js</h1>
-
-    
-
-
-
-    
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * @typedef {KeyboardEvent} KeyboardEvent
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent}
- */
-
-/**
+	<!-- start:navbar.hbs -->
+	<header class="navbar navbar-default navbar-fixed-top navbar-inverse">
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="index.html">
+					Command Palette.js
+				</a>
+				<!-- displayed on small devices -->
+				<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
+			<div class="navbar-collapse collapse" id="topNavigation">
+				<ul class="nav navbar-nav">
+							<li class="dropdown">
+								<a href="list_class.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+								<ul class="dropdown-menu">
+										<li><a href="CommandPalette.html">CommandPalette</a></li>
+										<li><a href="Element.html">Element</a></li>
+										<li><a href="HTMLElement.html">HTMLElement</a></li>
+										<li><a href="KeyboardEvent.html">KeyboardEvent</a></li>
+								</ul>
+							</li>
+				</ul>
+					<!-- start:lunr-search-navbar.hbs -->
+					<form class="navbar-form navbar-right" role="search">
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="Search" id="lunr-search-input">
+							<div class="input-group-btn">
+								<button class="btn btn-default" id="lunr-search-submit">
+									<i class="glyphicon glyphicon-search"></i>
+								</button>
+							</div>
+						</div>
+					</form>
+					<!-- start:lunr-search-navbar.hbs -->		</div>
+		</div>
+	</header>
+	<!-- end:navbar.hbs -->		<div class="page-header">
+			<div class="container">
+				<span class="kind">source</span>
+				<h1><span class="name">CommandPalette.js</span></h1>
+			</div>
+		</div>
+	<div class="container content">
+		<div class="row">
+			<div class="col-md-12 main-content">
+		<section class="source-section">
+			<article></article>
+			<pre class="prettyprint source language-javascript line-numbers"><code class="language-javascript">/**
  * @typedef {object} CommandPalette~Command
  * @property {string|symbol} name - Name of command (print in palette after category name)
  * @property {string} [description] - Detail text for explain action of command
@@ -59,16 +98,18 @@
 
 /**
  * @type {number}
+ * @private
  */
 let sequence = 0;
 
 /**
  * @type {CommandPalette~ConstructorOptions}
+ * @private
  */
 const defaultOptions = {
   isShortcut: event => event.ctrlKey &amp;&amp; event.altKey &amp;&amp; event.key === 'p',
   navigationCallback(event) {
-    switch(event.key) {
+    switch (event.key) {
       case 'ArrowDown':
         this.next();
         break;
@@ -83,7 +124,7 @@ const defaultOptions = {
 };
 
 /**
- * @property {CommandPalette~ConstructorOptions} options
+ * @property {CommandPalette~ConstructorOptions} options - Merged options (Object.assign) you give to constructor with default options
  */
 class CommandPalette {
 
@@ -96,8 +137,31 @@ class CommandPalette {
   }
 
   /**
+   * Default options is litteraly
+   *
+   * ```javascript
+   *
+   * const defaultOptions = {
+   *  isShortcut: event => event.ctrlKey &amp;&amp; event.altKey &amp;&amp; event.key === 'p',
+   *  navigationCallback(event) {
+   *    switch (event.key) {
+   *      case 'ArrowDown':
+   *        this.next();
+   *        break;
+   *      case 'ArrowUp':
+   *        this.prev();
+   *        break;
+   *      case 'Enter':
+   *        this.dispatch();
+   *        break;
+   *    }
+   *  }
+   * }
+   * ```
+   *
    * @param {CommandPalette~ConstructorOptions} [options={}] - Options for palette
-   * @example
+   *
+   * @example {@lang javascript}
    * // add `cmd-palette--custom` class to classlist of root command-palette dom element
    * new CommandPalette({
    *  cssClass: 'cmd-palette--custom'
@@ -129,8 +193,8 @@ class CommandPalette {
    *  }
    * );
    */
-  constructor(options={}) {
-    this.contexts = {
+  constructor(options = {}) {
+    this.categories = {
       '': {}
     };
     this._id = CommandPalette._sequence;
@@ -145,7 +209,7 @@ class CommandPalette {
    * @param {CommandPalette~Command[]} commands
    * @param {string|symbol} [category='']
    *
-   * @example
+   * @example {@lang javascript}
    * // add commands to default context
    * palette.setCategory([
    *  {
@@ -155,7 +219,7 @@ class CommandPalette {
    *      console.log('foo');
    *    }
    *  }
-   * ])
+   * ]);
    *
    * // replace `Bar` context
    * palette.setCategory([
@@ -166,13 +230,13 @@ class CommandPalette {
    *      console.log('foo');
    *    }
    *  }
-   * ], 'Bar')
+   * ], 'Bar');
    */
-  setCategory(commands=[], category='') {
-    const context = name ? {} : this.contexts[name];
+  setCategory(commands = [], category = '') {
+    const context = category ? {} : this.categories[category];
     commands.forEach(cmd => context[cmd.name] = cmd);
 
-    this.contexts[name] = context;
+    this.categories[category] = context;
   }
 
   /**
@@ -180,9 +244,9 @@ class CommandPalette {
    */
   removeCategory(category) {
     if (!category) return;
-    if (!category in this.contexts) return;
+    if (!category in this.categories) return;
 
-    delete this.contexts[category];
+    delete this.categories[category];
   }
 
   /**
@@ -191,13 +255,13 @@ class CommandPalette {
    * @param {CommandPalette~Command | CommandPalette~Command[]} commands
    * @param {string|symbol} [category=''] - Generic category if not specified
    */
-  addToCategory(commands, category='') {
-    this.contexts[category] || (this.contexts[category] = {});
+  addToCategory(commands, category = '') {
+    this.categories[category] || (this.categories[category] = {});
 
     if (Array.isArray(commands)) {
-      commands.forEach(command => this.contexts[category][command.name] = command);
+      commands.forEach(command => this.categories[category][command.name] = command);
     } else {
-      this.contexts[category][commands.name] = commands;
+      this.categories[category][commands.name] = commands;
     }
   }
 
@@ -216,8 +280,7 @@ class CommandPalette {
   _generateCommandDOM() {
     const commands = [];
 
-    for (let [category, context] of Object.entries(this.contexts)) {
-      console.log(context, category);
+    for (let [category, context] of Object.entries(this.categories)) {
       for (let [name, command] of Object.entries(context)) {
         commands.push({
           ...command, category, name,
@@ -229,7 +292,7 @@ class CommandPalette {
     return commands
       .sort((a, b) => a.category.localeCompare(b.category) || a.title.localeCompare(b.title))
       .map((cmd, idx) => `
-        &lt;li data-category="${cmd.category}" data-name="${cmd.name}"${idx === 0 ? ' selected': ''}>
+        &lt;li data-category="${cmd.category}" data-name="${cmd.name}"${idx === 0 ? ' selected' : ''}>
           &lt;span class="title">${cmd.title}&lt;/span>
           &lt;span class="description">${cmd.description}&lt;/span>
         &lt;/li>
@@ -320,7 +383,7 @@ class CommandPalette {
     if (!oldSelected) return;
     let selected = oldSelected;
 
-    while(selected.nextElementSibling) {
+    while (selected.nextElementSibling) {
       selected = selected.nextElementSibling;
 
       if (selected.matches('.cmd-palette-item--hide')) continue;
@@ -329,6 +392,8 @@ class CommandPalette {
 
     oldSelected.removeAttribute('selected');
     selected.setAttribute('selected', 'selected');
+
+    CommandPalette._scrollTo(selected);
   }
 
   /**
@@ -342,7 +407,7 @@ class CommandPalette {
     if (!oldSelected) return;
     let selected = oldSelected;
 
-    while(selected.previousElementSibling) {
+    while (selected.previousElementSibling) {
       selected = selected.previousElementSibling;
 
       if (selected.classList.contains('cmd-palette-item--hide')) continue;
@@ -351,6 +416,22 @@ class CommandPalette {
 
     oldSelected.removeAttribute('selected');
     selected.setAttribute('selected', 'selected');
+
+    CommandPalette._scrollTo(selected);
+  }
+
+  /**
+   * @param {HTMLElement|Element} selected
+   * @private
+   */
+  static _scrollTo(selected) {
+    if (!selected) return;
+    if (!selected.parentElement) return;
+
+    const itemHeight = selected.clientHeight;
+    const scrollTopSelectedTopMax = selected.offsetTop - itemHeight;
+
+    selected.parentElement.scrollTop = scrollTopSelectedTopMax - (2 * itemHeight);
   }
 
   /**
@@ -364,7 +445,7 @@ class CommandPalette {
   static _fuzzySearch(search, term) {
     let hay = term.toLowerCase(), i = 0, n = -1, l;
     search = search.toLowerCase();
-    for (; l = search[i++] ;) if (!~(n = hay.indexOf(l, n + 1))) return false;
+    for (; l = search[i++];) if (!~(n = hay.indexOf(l, n + 1))) return false;
     return true;
   }
 
@@ -376,7 +457,7 @@ class CommandPalette {
    */
   search(text) {
     if (this.isHide()) return;
-    console.log('start search', text);
+    text = text.trim();
 
     const dom = this._findOrGenerateDom();
     const items = [...dom.querySelectorAll('li')];
@@ -408,14 +489,15 @@ class CommandPalette {
     const item = dom.querySelector('li[selected]:not(.cmd-palette-item--hide)');
     if (!item) return;
 
-    const {category='', name} = item.dataset;
-    const context = this.contexts[category];
-    if(!context) return;
+    const {category = '', name} = item.dataset;
+    const context = this.categories[category];
+    if (!context) return;
 
     const command = context[name];
-    if(!command) return;
+    if (!command) return;
 
     typeof command.action === 'function' &amp;&amp; command.action();
+    this.hide();
   }
 
   /**
@@ -425,7 +507,7 @@ class CommandPalette {
    */
   _initEvent() {
     this._docClickHide = event => {
-      if (event.target.matches('#cmd-palette') || event.target.closest('#cmd-palette')) return;
+      if (event.target.matches('.cmd-palette') || event.target.closest('.cmd-palette')) return;
 
       this.hide();
     };
@@ -456,25 +538,37 @@ class CommandPalette {
 }
 
 export default CommandPalette;</code></pre>
-        </article>
-    </section>
-
-
-
-
-</div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="CommandPalette.html">CommandPalette</a></li></ul><h3>Global</h3><ul><li><a href="global.html#defaultOptions">defaultOptions</a></li><li><a href="global.html#sequence">sequence</a></li></ul>
-</nav>
-
-<br class="clear">
-
-<footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Mar 15 2018 16:58:25 GMT+0100 (CET)
-</footer>
-
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+		</section>
+			</div>
+		</div>
+	</div>
+	<footer>
+				<div class="copyright">FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.</div>
+			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on 16th Mar 2018 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
+	</footer>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/clipboard.min.js"></script>
+	<script src="js/prism.min.js"></script>
+	<script src="js/template.min.js"></script>
+		<!-- start:lunr-search-modal.hbs -->
+		<div class="modal fade" id="lunr-search-modal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">Search results</h4>
+					</div>
+					<div class="modal-body" id="lunr-search-body">
+					</div>
+					<div class="modal-footer" id="lunr-search-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div>
+		<!-- end:lunr-search-modal.hbs -->		<script src="js/lunr.min.js"></script>
+	
 </body>
 </html>
+<!-- end:source.tmpl.hbs -->
