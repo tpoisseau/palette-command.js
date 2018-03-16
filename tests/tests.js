@@ -1,4 +1,4 @@
-const palette = new CommandPalette();
+const palette = new PaletteCommand();
 
 palette.setCategory([
   {
