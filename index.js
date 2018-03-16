@@ -1,4 +1,4 @@
-import CommandPalette from './src/CommandPalette';
-import './src/CommandPalette.scss';
+import PaletteCommand from './src/PaletteCommand';
+import './src/PaletteCommand.scss';
 
-export default CommandPalette;
+export default PaletteCommand;

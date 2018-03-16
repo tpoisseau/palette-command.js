@@ -1,27 +1,27 @@
 /**
- * @typedef {object} CommandPalette~Command
+ * @typedef {object} PaletteCommand~Command
  * @property {string|symbol} name - Name of command (print in palette after category name)
  * @property {string} [description] - Detail text for explain action of command
  * @property {function} action - Callback when user press `Enter` on command when selected
  */
 
 /**
- * @callback CommandPalette~ConstructorOptionsShortcut
+ * @callback PaletteCommand~ConstructorOptionsShortcut
  * @param {KeyboardEvent} event - keypress event from document
  * @return {boolean} - return true if keypress event is your shortcut
  */
 
 /**
- * @callback CommandPalette~ConstructorOptionsNavigation
+ * @callback PaletteCommand~ConstructorOptionsNavigation
  * @param {KeyboardEvent} event - keypress event from document
- * @this {CommandPalette}
+ * @this {PaletteCommand}
  */
 
 /**
- * @typedef {object} CommandPalette~ConstructorOptions
+ * @typedef {object} PaletteCommand~ConstructorOptions
  * @property {string} [cssClass] - add if you want stylize the palette with your own css ;-)
- * @property {CommandPalette~ConstructorOptionsShortcut} [isShortcut] - take a KeyboardEvent and return if right shortcut, by default the shortcut is ctrl-alt-p
- * @property {CommandPalette~ConstructorOptionsNavigation} [navigationCallback] - take a KeyboardEvent and execute your navigation
+ * @property {PaletteCommand~ConstructorOptionsShortcut} [isShortcut] - take a KeyboardEvent and return if right shortcut, by default the shortcut is ctrl-alt-p
+ * @property {PaletteCommand~ConstructorOptionsNavigation} [navigationCallback] - take a KeyboardEvent and execute your navigation
  */
 
 /**
@@ -31,7 +31,7 @@
 let sequence = 0;
 
 /**
- * @type {CommandPalette~ConstructorOptions}
+ * @type {PaletteCommand~ConstructorOptions}
  * @private
  */
 const defaultOptions = {
@@ -52,9 +52,9 @@ const defaultOptions = {
 };
 
 /**
- * @property {CommandPalette~ConstructorOptions} options - Merged options (Object.assign) you give to constructor with default options
+ * @property {PaletteCommand~ConstructorOptions} options - Merged options (Object.assign) you give to constructor with default options
  */
-class CommandPalette {
+class PaletteCommand {
 
   /**
    * @returns {number}
@@ -87,21 +87,21 @@ class CommandPalette {
    * }
    * ```
    *
-   * @param {CommandPalette~ConstructorOptions} [options={}] - Options for palette
+   * @param {PaletteCommand~ConstructorOptions} [options={}] - Options for palette
    *
    * @example {@lang javascript}
    * // add `cmd-palette--custom` class to classlist of root command-palette dom element
-   * new CommandPalette({
+   * new PaletteCommand({
    *  cssClass: 'cmd-palette--custom'
    * });
    *
    * // use ctrl+alt+m ShortCut for display palette
-   * new CommandPalette({
+   * new PaletteCommand({
    *  isShortcut: e => e.ctrlKey && e.altKey && e.key === 'm'
    * });
    *
    * // shift+ArrowDown or shift+ArrowUp for navigate 5 by 5
-   * new CommandPalette({
+   * new PaletteCommand({
    *  navigationCallback(event) {
    *    switch(event.key) {
    *      case 'ArrowDown':
@@ -125,7 +125,7 @@ class CommandPalette {
     this.categories = {
       '': {}
     };
-    this._id = CommandPalette._sequence;
+    this._id = PaletteCommand._sequence;
     this.options = Object.assign({}, defaultOptions, options);
     this._initEvent();
   }
@@ -134,7 +134,7 @@ class CommandPalette {
    * If no category specified, merge commands in generic category
    * else replace existent category (if exist) with this set of commands
    *
-   * @param {CommandPalette~Command[]} commands
+   * @param {PaletteCommand~Command[]} commands
    * @param {string|symbol} [category='']
    *
    * @example {@lang javascript}
@@ -180,7 +180,7 @@ class CommandPalette {
   /**
    * Add list (or single) Command to the category
    *
-   * @param {CommandPalette~Command | CommandPalette~Command[]} commands
+   * @param {PaletteCommand~Command | PaletteCommand~Command[]} commands
    * @param {string|symbol} [category=''] - Generic category if not specified
    */
   addToCategory(commands, category = '') {
@@ -321,7 +321,7 @@ class CommandPalette {
     oldSelected.removeAttribute('selected');
     selected.setAttribute('selected', 'selected');
 
-    CommandPalette._scrollTo(selected);
+    PaletteCommand._scrollTo(selected);
   }
 
   /**
@@ -345,7 +345,7 @@ class CommandPalette {
     oldSelected.removeAttribute('selected');
     selected.setAttribute('selected', 'selected');
 
-    CommandPalette._scrollTo(selected);
+    PaletteCommand._scrollTo(selected);
   }
 
   /**
@@ -394,7 +394,7 @@ class CommandPalette {
       items.forEach(li => li.classList.remove('cmd-palette-item--hide'));
     } else {
       items.forEach(li => {
-        if (CommandPalette._fuzzySearch(text, li.querySelector('.title').textContent)) {
+        if (PaletteCommand._fuzzySearch(text, li.querySelector('.title').textContent)) {
           li.classList.remove('cmd-palette-item--hide');
         } else {
           li.classList.add('cmd-palette-item--hide');
@@ -453,7 +453,7 @@ class CommandPalette {
   }
 
   /**
-   * Remove CommandPalette from DOM
+   * Remove PaletteCommand from DOM
    */
   destroy() {
     document.removeEventListener('click', this._docClickHide);
@@ -465,4 +465,4 @@ class CommandPalette {
   }
 }
 
-export default CommandPalette;
+export default PaletteCommand;

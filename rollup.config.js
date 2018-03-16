@@ -12,9 +12,9 @@ export default [
           sourceMapContents: true,
           sourceMapEmbed: true,
           sourceMap: true,
-          outFile: 'dist/command-palette.min.css',
+          outFile: 'dist/palette-command.min.css',
         },
-        output: 'dist/command-palette.min.css',
+        output: 'dist/palette-command.min.css',
       }),
       babel({
         exclude: 'node_modules/**',
@@ -26,9 +26,9 @@ export default [
       }),
     ],
     output: {
-      file: 'dist/command-palette.min.js',
+      file: 'dist/palette-command.min.js',
       sourcemap: true,
-      name: 'CommandPalette',
+      name: 'PaletteCommand',
       format: 'iife',
     },
     watch: {

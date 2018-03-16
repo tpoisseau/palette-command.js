@@ -1,7 +1,7 @@
 {
-  "name": "command-palette",
+  "name": "palette-command",
   "version": "0.0.1",
-  "description": "CommandPalette like ctrl+shift+p like SublimeText for modern browser",
+  "description": "PaletteCommand like ctrl+shift+p like SublimeText for modern browser",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tpoisseau/CommandPalette-JS.git"
+    "url": "git+https://github.com/tpoisseau/palette-command.js.git"
   },
   "keywords": [
     "front",
@@ -24,9 +24,9 @@
   "author": "tpoisseau",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tpoisseau/CommandPalette-JS/issues"
+    "url": "https://github.com/tpoisseau/palette-command.js/issues"
   },
-  "homepage": "https://github.com/tpoisseau/CommandPalette-JS#readme",
+  "homepage": "https://github.com/tpoisseau/palette-command.js#readme",
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
